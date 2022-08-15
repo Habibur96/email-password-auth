@@ -1,7 +1,7 @@
 
 import './App.css';
 import app from './firebase.init';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
@@ -30,6 +30,7 @@ function App() {
   const handleRegisteredChange = event => {
     setRegistered(event.target.checked);
   }
+
 
   const handleFormSubmit = event => {
     event.preventDefault();
@@ -63,6 +64,9 @@ function App() {
         .then(result => {
           const user = result.user;
           console.log(user);
+          setEmail('');
+          setPassword('');
+          verifyEmail();
         })
         .catch(error => {
           console.error(error);
@@ -73,6 +77,12 @@ function App() {
 
 
     console.log('form submitted', email, password)
+  }
+  const verifyEmail = () => {
+    sendEmailVerification(auth.currentUser)
+      .then(() => {
+        console.log('Email Varification Sent')
+      })
   }
   return (
     <div >
